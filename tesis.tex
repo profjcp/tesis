@@ -1,0 +1,395 @@
+% Emerald Publishing - Construction Innovation Submission Template
+% by Oleksandr Melnyk
+% Ver 0.0.4
+% Based on: https://www.emeraldgrouppublishing.com/journal/ci#author-guidelines
+
+
+\documentclass{article}
+
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amssymb}
+\usepackage{siunitx}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage[utf8]{inputenc}
+\usepackage[right]{lineno}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{adjustbox}
+\usepackage{array}
+\usepackage{url}
+\usepackage{titlesec}
+%\usepackage[compatibility=false]{caption}
+\usepackage{authblk}
+\usepackage{xcolor} % Load the xcolor package for color options
+\renewcommand{\thetable}{\Roman{table}}
+
+% Define a new format for \subsection
+\titleformat{\subsection}
+  {\mdseries\itshape\large} % Medium series, italic shape, and large font size
+  {\thesubsection}{1em}{} % Numbering, spacing, and the section title itself
+
+
+% Emerald Harvard Citation Style
+
+\usepackage[english]{babel}
+\usepackage[style=authoryear,backend=biber,natbib=true,maxcitenames=2,uniquelist=false]{biblatex}
+\addbibresource{Bibliography.bib} % your .bib file
+
+% Customizing biblatex for Harvard style
+% Customizing biblatex for Harvard style
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{default}{family-given}
+
+\renewbibmacro{in:}{}
+\DeclareFieldFormat[article]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[book]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[bookinbook]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[inbook]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[incollection]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[inproceedings]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[manual]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[misc]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[unpublished]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[patent]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[report]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[online]{title}{\mkbibquote{#1}\addcomma}
+\DeclareFieldFormat[software]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[booklet]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[periodical]{title}{\mkbibemph{#1}\addcomma}
+\DeclareFieldFormat[standard]{title}{\mkbibemph{#1}\addcomma}
+
+\DeclareFieldFormat[article]{journaltitle}{\iffieldundef{shortjournal}{\mkbibemph{#1}\addcomma}{\mkbibemph{\printfield{shortjournal}}\addcomma}}
+\DeclareFieldFormat{volume}{\bibstring{volume}~#1}
+\DeclareFieldFormat{number}{\bibstring{number}~#1}
+
+% Definitions for "Vol." and "No."
+\DefineBibliographyStrings{english}{
+  volume = {Vol.},
+  number = {No.}
+}
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addcomma\space}%
+  \usebibmacro{issue+date}}
+
+\renewbibmacro*{publisher+location+date}{%
+  \printlist{publisher}%
+  \iflistundef{location}
+    {\setunit*{\addcomma\space}}
+    {\setunit*{\addcolon\space}}%
+  \printlist{location}%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{date}}
+
+\renewcommand*{\bibpagespunct}{\addcomma\space}
+
+% Customizing page field format to prevent duplication
+% \DeclareFieldFormat{pages}{%
+%   \mkfirstpage[{\mkpageprefix[page]{#1}}]{#1}}
+
+% Customizing citations for Harvard style
+\DeclareCiteCommand{\cite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\renewbibmacro*{cite:labelyear+extrayear}{%
+  \iffieldundef{labelyear}
+    {}
+    {\printtext[bibhyperref]{%
+       \printfield{labelyear}%
+       \printfield{extrayear}}}}
+
+\renewbibmacro*{cite:labeldate+extradate}{%
+  \iffieldundef{labelyear}
+    {}
+    {\printtext[bibhyperref]{%
+       \printfield{labelyear}%
+       \printfield{extradate}}}}
+
+\AtEveryBibitem{
+  \clearfield{month}
+  \clearfield{day}
+  \ifentrytype{book}{
+    \clearlist{location}
+  }{}
+}
+
+% Formatting "et al." in italics followed by a comma
+\DefineBibliographyStrings{english}{
+  andothers = {\textit{et al.},}
+}
+
+\DeclareFieldFormat[article]{volume}{\bibstring{jourvol}\addnbspace #1}
+\DeclareFieldFormat[article]{number}{\bibstring{number}\addnbspace #1}
+\DeclareFieldFormat[article]{volume}{Vol. #1}
+\DeclareFieldFormat[article]{number}{No. #1}
+% Customizing DOI field format to lowercase "doi"
+%\DeclareFieldFormat{doi}{\bibstring{doi}\addcolon\space\url{#1}}
+
+% Customizing URL field format to "available at:"
+\DeclareFieldFormat{url}{\bibstring{available at}\addcolon\space\url{#1}}
+\DeclareFieldFormat{urldate}{\mkbibparens{accessed \addspace#1}}
+
+% Customizing urldate to match the required format
+\DeclareFieldFormat{urldate}{%
+  \mkbibparens{accessed\space%
+    \thefield{urlday}\addspace%
+    \mkbibmonth{\thefield{urlmonth}}\addspace%
+    \thefield{urlyear}}}
+
+
+% Configure cleveref
+\crefformat{figure}{#2Figure~#1#3}
+\Crefformat{figure}{#2Figure~#1#3}
+\crefformat{table}{#2Table~#1#3}
+\Crefformat{table}{#2Table~#1#3}
+\crefformat{section}{#2Section~#1#3}
+\Crefformat{section}{#2Section~#1#3}
+
+%Front Matter
+\author[1]{Juan Carlos Peinado}
+\author[2]{Jorge Rosales}
+\author[3]{Evans Balcazar}
+\author[4]{Shirley Perez}
+\author[5]{Edgar Jaldin}
+
+\affil[1]{School of Engineering, Santa Cruz, Bolivia
+email (jcpeinadop@soe.uagrm.edu.bo)}
+\affil[2]{FICCT, Ciencias de la Computación, Santa Cruz, Bolivia}
+
+\title{Herramientas dockerizadas para el desarrollo de software basadas en IA}
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\textbf{Purpose} - This study aims to investigate the impact of [specific variable or phenomenon] on [specific outcome or field], addressing a critical gap in the existing literature. The research seeks new insights into [specific problem or issue], contributing to a deeper understanding of [relevant context or application].
+
+\textbf{Design/Methodology/Approach} - The study employs a [qualitative/quantitative/mixed-methods] approach, utilizing [specific methodologies such as surveys, experiments, case studies, etc.]. Data were collected from [description of the sample or data sources] and analyzed using [specific analytical tools or software].
+
+\textbf{Findings} - The results reveal that [briefly describe key findings], indicating that [specific conclusion or implication]. These findings provide evidence that [mention whether the hypothesis was confirmed or if new patterns emerged], offering significant implications for [specific field, industry, or theoretical framework].
+
+\textbf{Originality/Value} - This research offers a novel perspective on [topic], providing valuable insights that extend the current understanding of [subject matter]. The study’s findings contribute to [mention the advancement or practical application], highlighting areas for future research and potential policy or practical applications. 
+\\
+\\
+%add 6 keywords
+\textbf{Keywords:} keyword 1; keyword 2; keyword 3, keyword 4; keyword 5; keyword 6
+\end{abstract}
+\linenumbers
+
+%\section*{Template Overview}
+%\textcolor{blue}{This \LaTeX template is designed to incorporate the specific Harvard citation style defined by Emerald Publishing, along with section styles and other adjustments required for submission in Construction Innovation journal.
+%Users should adapt the styling to align with the guidelines of the journal to which they are submitting their article. Make sure to remove the authors' names and acknowledgements if you are submitting an anonymous file for double-blind peer review.}
+
+\section{Introducción}
+\label{sec:introduction}
+
+El desarrollo de IA está en auge, pero con él llegan nuevos desafíos. Las herramientas, frameworks y configuraciones pueden ser abrumadoras, dificultando el despliegue y la escalabilidad de modelos de IA. Aquí es donde Docker AI Genai entra en juego. Esta poderosa herramienta permite a los desarrolladores de IA enfocarse en lo que realmente importa: crear soluciones innovadoras, sin preocuparse por la infraestructura subyacente.
+
+En este artículo, exploraremos cómo Docker AI Genai simplifica el desarrollo de IA, desde la construcción y el entrenamiento de modelos hasta la implementación y la gestión. Descubre cómo esta plataforma revoluciona la experiencia de desarrollo de IA, liberando a los desarrolladores para que se concentren en su creatividad y alcancen nuevas metas.
+
+Tradicionalmente, el desarrollo de IA implica una configuración compleja de hardware, software y dependencias, lo que dificulta la creación y el despliegue de modelos de IA de forma reproducible.
+
+Docker AI GenAI proporciona un entorno de desarrollo unificado y portátil que encapsula todas las dependencias necesarias para ejecutar modelos de IA. Esto simplifica el proceso de desarrollo, permite la colaboración entre equipos y facilita el despliegue en diferentes plataformas.
+
+Docker AI GenAI se basa en la creación de contenedores Docker que contienen los modelos de IA, sus dependencias y el entorno de ejecución necesario. Estos contenedores se pueden ejecutar en cualquier sistema operativo compatible con Docker, garantizando la portabilidad y la consistencia.
+
+Docker AI GenAI ofrece una serie de beneficios para los desarrolladores de IA:
+
+\begin{itemize}
+    \item Aceleración del desarrollo: El entorno unificado simplifica la configuración y reduce el tiempo dedicado a la gestión de dependencias.
+    \item Mejora de la colaboración: Los contenedores Docker facilitan el intercambio de modelos y código entre equipos.
+    \item Facilidad de despliegue: Los contenedores se pueden desplegar fácilmente en diferentes plataformas, desde servidores locales hasta la nube.
+    \item Reproducibilidad: Los contenedores garantizan que el modelo de IA se ejecute de la misma manera en cualquier entorno.
+\end{itemize}
+
+\subsection{Tecnologia de Docker Genai y stack Genai}
+
+\textbf{¿Qué es GenAI?}
+
+La IA generativa, a menudo abreviada como GenAI, permite a los usuarios enviar diversos comandos para producir nuevo contenido, incluyendo texto, imágenes, videos, sonidos, código, diseños 3D y más. Adquiere conocimiento al entrenarse con contenido digital existente y documentos que se encuentran en línea. Esta tecnología avanza continuamente a medida que procesa y aprende de datos adicionales. Utiliza modelos y algoritmos de IA entrenados en conjuntos de datos grandes y no etiquetados.
+
+Descripción general de la arquitectura de GenAI El siguiente diagrama ilustra los componentes típicos y la topología de las implementaciones de GenAI. Figura 1: Diagrama de una arquitectura típica de aplicación GenAI.
+
+\begin{figure}[ht]
+ \centering
+ \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{Figures/GenAIGra.png}}%
+ \caption{Diagram of a typical GenAI application architecture}
+ \label{fig-1}
+\end{figure}
+
+
+
+Stack de GenAI: Qué es y Cómo Construir el Tuyo Cuando construyes un stack de GenAI desde cero, primero necesitarás elegir las tecnologías que vas a usar. Tendrás que satisfacer cada uno de los siguientes componentes y configurarlos para que trabajen juntos. Las imágenes para estos componentes se pueden encontrar en Docker Hub y otras fuentes en línea. Pero, como con cualquier proyecto de desarrollo de software, asegúrate de estar utilizando software confiable y probado.
+
+\begin{itemize}
+	
+	\item Front-End: El front-end consistirá en un servidor web, un framework web (Vu.js, Angular o React), un framework CSS (bootstrap o material-ui), y WebSocket o AJAX. Estos permitirán que el servidor y el cliente se comunique.
+	
+	\item Base de Datos Vectorial: Una base de datos vectorial almacena, indexa y recupera eficientemente incrustaciones vectoriales. Las incrustaciones vectoriales son representaciones multidimensionales de datos que se utilizan comúnmente en tareas de aprendizaje automático y búsqueda de similitudes.
+
+	\item Modelo de Lenguaje Grande: Los Modelos de Lenguaje Grande (LLMs) son los motores centrales de las aplicaciones de GenAI. Impulsan la generación de texto similar al humano y abren un amplio espectro de funcionalidades. Dado que los modelos LLM están diseñados y entrenados para diferentes casos de uso, querrás elegir uno que se adapte mejor a tu aplicación.
+
+	\item Vectorización: La vectorización convierte texto en formatos numéricos que los modelos de aprendizaje automático pueden procesar, a menudo utilizando técnicas como las incrustaciones de palabras. Varias bases de datos vectoriales incluyen esta funcionalidad, pero también existen herramientas dedicadas para gestionar este proceso.
+
+	\item Almacenamiento de Datos para RAG: RAG mejora la salida de texto al combinar sistemas de recuperación y modelos generativos. Recupera datos pertinentes para una consulta de una base de datos para producir respuestas relevantes y precisas.
+\end{itemize}
+
+\textbf{¿Qué compone el GenAI Stack?}
+El stack es un conjunto de contenedores que facilita la experimentación en la construcción y ejecución de aplicaciones de IA Generativa. Estos contenedores proporcionan un entorno de desarrollo de aplicaciones de soporte preconstruido con casos de uso de importación de datos y generación de respuestas. Incluye:
+\begin{enumerate}
+	\item Ollama: Una herramienta de gestión para LLMs locales
+	\item Neo4j: Una base de datos de gráficos de vectores y conocimiento para proporcionar soporte RAG
+	\item LangChain: Una plataforma que integra modelos de lenguaje con fuentes de datos externas y APIs, permitiendo que las aplicaciones de GenAI realicen tareas más complejas
+	\item LLMs preconfigurados: Modelos de Lenguaje Grande preconfigurados como Llama2, GPT-3.5 y GPT-4
+\end{enumerate}
+¿Cómo funcionan juntos los componentes de GenAI?
+
+\begin{figure}[ht]
+ \centering
+ \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{Figures/stackgenai.png}}%
+ \caption{Pila Genai de Docker}
+ \label{fig-2}
+\end{figure}
+
+Figura 2: Diagrama que muestra los 9 contenedores creados al desplegar la pila GenAI de Docker, junto con una breve lista en viñetas de partes potencialmente complicadas.
+La arquitectura consiste en los siguientes 9 contenedores (mostrados en la Figura 2):
+
+\begin{enumerate}
+
+\item Contenedor de Front-end - Este contiene la interfaz de usuario del front-end y está preconfigurado para comunicarse con el LLM y la base de datos Vector.
+\item Contenedor de Base de Datos - Neo4J se utiliza como base de datos de vectores y grafos de conocimiento para habilitar el soporte RAG.
+\item Contenedor de LLM - El LLM elegido se despliega dentro de este contenedor.
+\item Contenedor LLM GPU - Si la pila GenAI está configurada para utilizar una GPU, este contenedor alberga el software para facilitar esto.
+\item Contenedor de Cargador — Este contiene la lógica para recuperar, dividir y cargar etiquetas desde StackOverflow en la base de datos vectorial.
+\item Contenedor de Modelo Pull — Responsable de descargar y configurar el LLM seleccionado. Este contenedor está destinado a ejecutarse por poco tiempo y solo se activará cuando se realicen cambios en el LLM definido.
+\item Contenedor de API — El contenido de este contenedor gestiona la comunicación entre los componentes de la pila GenAI.
+\item Contenedor de Bot — Esta es la lógica de aplicación para el chatbot de soporte.
+\item Contenedor de Bot PDF — Esta aplicación es responsable de procesar los PDFs subidos y cargar los datos divididos en el Contenedor de Base de Datos.
+\end{enumerate}
+
+\section{Method}
+\label{sec:method}
+The \textcolor{teal}{\textit{Methods}} section should provide a comprehensive and detailed description of the research procedures employed in the study. 
+It should explain the data collection and analysis techniques, ensuring that the description is thorough enough to allow others to replicate the study. 
+The section should be written in the past tense and typically employ passive voice to maintain an objective tone. 
+Additionally, it is essential to include all necessary bibliographic information for each source cited, such as in the example \cite{fellows_research_2021}.
+
+Use the Emerald Harvard style defined in this template for references, and adjust the citation style if necessary. Include DOIs where available. 
+
+\section{Main Section}
+\label{sec:main_section}
+When submitting manuscripts using \LaTeX, a PDF file must also be included. 
+Articles should be between 6,000 and 10,000 words, encompassing all text, tables, and figures. 
+A concise and descriptive title must be included, and it is essential to list all contributing authors in the submission, along with their email addresses, names, and affiliations.
+
+
+
+\subsection{Subsection 1}
+Ensure headings are concise and clearly indicate the hierarchy. 
+Use sparingly and identify with consecutive numbers in square brackets.
+Submit figures (such as \cref{fig-1} electronically at the highest resolution. Number figures consecutively with clear captions.
+
+\begin{figure}[ht]
+ \centering
+ \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{Figures/Figure_1.jpg}}%
+ \caption{Figure caption}
+ \label{fig-1}
+\end{figure}
+
+
+\subsection{Subsection 2}
+
+\textbf{Emerald Publishing} accepts formats such as .ai, .eps, .jpeg, .bmp, and .tif. Electronic figures created in other applications should be provided in their original formats. 
+Additionally, these figures should either be copied and pasted into a blank MS Word document or submitted as a PDF file.
+
+\section{Results}
+\label{sec:modelling}
+This \LaTeX template is designed to create an academic article with specific formatting and citation requirements. Here's a plain-text explanation of how the template has been structured:
+
+Useful Packages:
+        Several \LaTeX packages are included to provide additional functionalities:
+            \begin{itemize}
+                \item amssymb: Provides access to additional mathematical symbols.
+                \item siunitx: Allows for consistent formatting of numbers and units.
+                \item hyperref: Adds hyperlinks to the document, with an option to handle URL line breaks.
+                \item cleveref: Enhances cross-referencing features.
+                \item inputenc: Handles input encoding, using UTF-8 for wider character support.
+                \item lineno: Adds line numbers to the document.
+                \item csquotes: Handles quotation marks in a language-sensitive way.
+                \item booktabs: Provides better formatting for tables.
+                \item longtable: Supports tables that can span multiple pages.
+                \item adjustbox: Allows for resizing and adjusting the positioning of content.
+                \item array: Provides additional tools for formatting tables and arrays.
+                \item url: Simplifies the inclusion of URLs in the document.
+                \item titlesec: Customizes section titles (though the specific customization is commented out).
+                \item authblk: Manages author affiliations.
+            \end{itemize}
+
+
+Submit tables (such as \ref{tab-II}) separately with clear titles and label their positions in the main text.\\
+Non-critical supplementary material should be submitted separately and will be hosted alongside the article.
+
+\begin{table}[ht]
+ \centering
+ \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{Figures/Table_I.jpg}}%
+ \caption{Tables numbered in roman numerals}
+ \label{tab-II}
+\end{table}
+
+The table numbering format is redefined with the command below. This command switches from Arabic to Roman numerals for table captions:
+        \begin{verbatim} 
+        \renewcommand{\thetable}{\Roman{table}} 
+        \end{verbatim}
+
+
+\section{Discussion}
+\label{sec:discussion}
+A research paper's \textcolor{teal}{\textit{Discussion}} section typically encompasses several elements. 
+First, it involves the interpretation of results, where you explain what your findings signify in relation to your research question. 
+This is followed by a comparison with previous work, which involves relating your results to existing literature and highlighting similarities and differences. 
+If applicable, you should also explain any unexpected results, discussing surprising findings and their potential causes. 
+Additionally, this section should address the broader implications of your results for the field or related areas. 
+Acknowledging any limitations of your study or methodology is crucial, as is suggesting potential avenues for future research based on your findings.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+A strong \textcolor{teal}{\textit{Conclusion}} typically encompasses several essential elements. It begins with a restatement of the thesis or main idea, reinforcing the core message of the paper. This is followed by a summary of the key points discussed throughout the text, which helps to consolidate the main arguments. The conclusion should also include final thoughts or reflections on the topic, providing a thoughtful discussion wrap-up. 
+
+\hfill
+
+\textit{Acknowledgments} \\Mention all external funding sources in the acknowledgements.\\
+
+\textit{Disclosure statement:} \\No potential conflict of interest is reported by the authors
+
+
+
+
+%\break
+\printbibliography
+
+\end{document}
